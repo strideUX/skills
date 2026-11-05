@@ -1,0 +1,20 @@
+{
+  "name": "strideux",
+  "owner": {
+    "name": "strideUX",
+    "email": "hello@strideux.io"
+  },
+  "metadata": {
+    "description": "Agent skills strideUX builds and uses in its own workflow.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "narrated-screen-recordings",
+      "description": "Make short narrated product walkthrough videos: a script drives a real browser and pointer while the screen records, and ElevenLabs voices each step in time with the action.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/narrated-screen-recordings"]
+    }
+  ]
+}
