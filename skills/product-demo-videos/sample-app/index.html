@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Acme Projects</title>
+<!--
+  A small, self-contained app for smoke tests, calibration practice and demos.
+  No build step and no network: open it as a file:// URL.
+-->
+<style>
+  :root {
+    --bg: #f6f5f1; --panel: #fff; --fg: #17181b; --soft: #55585f; --muted: #8b8d92;
+    --line: #e6e4de; --accent: #2f5bea; --accent-soft: #e9eefd; --ok: #1f8a4c;
+    --high: #c2410c; --high-soft: #fdeee4; --radius: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--fg); background: var(--bg);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; height: 100vh; display: grid; grid-template-columns: 232px 1fr; }
+  button, input { font: inherit; color: inherit; }
+  aside { border-right: 1px solid var(--line); padding: 20px 14px; display: flex; flex-direction: column; gap: 4px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 650; padding: 4px 8px 20px; }
+  .mark { width: 26px; height: 26px; border-radius: 7px; background: var(--fg); color: #fff; display: grid; place-items: center; font-size: 14px; }
+  nav a { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: var(--soft); text-decoration: none; font-size: 14px; }
+  nav a:hover { background: #ecebe6; color: var(--fg); }
+  nav a[aria-current] { background: var(--panel); color: var(--fg); box-shadow: 0 0 0 1px var(--line); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; opacity: .5; }
+  main { padding: 36px 48px; overflow: auto; }
+  header { display: flex; align-items: end; justify-content: space-between; margin-bottom: 24px; }
+  h1 { font-size: 26px; margin: 0 0 4px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); font-size: 14px; margin: 0; }
+  .btn { border: 0; border-radius: 8px; padding: 9px 14px; font-size: 14px; font-weight: 550; cursor: pointer; }
+  .btn-primary { background: var(--fg); color: #fff; }
+  .btn-primary:hover { background: #33363c; }
+  .btn-ghost { background: transparent; color: var(--soft); }
+  .btn-ghost:hover { background: #ecebe6; }
+  .list { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .row { display: grid; grid-template-columns: 22px 1fr 150px 90px; align-items: center; gap: 14px; padding: 14px 18px; border-top: 1px solid var(--line); font-size: 14px; }
+  .row:first-child { border-top: 0; }
+  .row:hover { background: #fbfaf8; }
+  .row.new { animation: arrive 1.6s ease-out; }
+  @keyframes arrive { from { background: var(--accent-soft); } to { background: transparent; } }
+  .check { width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid #c9c7c0; }
+  .who { display: flex; align-items: center; gap: 8px; color: var(--soft); }
+  .av { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 10px; font-weight: 650; color: #fff; }
+  .tag { justify-self: start; font-size: 12px; padding: 3px 8px; border-radius: 99px; background: #f0efea; color: var(--soft); }
+  .tag.high { background: var(--high-soft); color: var(--high); }
+  dialog { border: 0; border-radius: 14px; padding: 0; width: 460px; box-shadow: 0 24px 60px rgba(20,20,25,.18), 0 0 0 1px var(--line); }
+  dialog::backdrop { background: rgba(23,24,27,.28); }
+  .dlg { padding: 24px; display: grid; gap: 18px; }
+  .dlg h2 { margin: 0; font-size: 18px; }
+  label { display: grid; gap: 6px; font-size: 13px; color: var(--soft); }
+  .field { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; background: #fff; font-size: 14px; color: var(--fg); text-align: left; }
+  .field:focus, .field[aria-expanded="true"] { outline: 2px solid var(--accent); outline-offset: -1px; border-color: transparent; }
+  .select { position: relative; }
+  .select .field { width: 100%; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .menu { position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: #fff; border-radius: 10px; padding: 6px; box-shadow: 0 12px 32px rgba(20,20,25,.14), 0 0 0 1px var(--line); z-index: 5; display: none; }
+  .menu[data-open] { display: block; }
+  .opt { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 7px; font-size: 14px; cursor: pointer; }
+  .opt:hover { background: var(--accent-soft); }
+  .opt small { margin-left: auto; color: var(--muted); }
+  .seg { display: flex; gap: 6px; }
+  .seg button { flex: 1; border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 8px; font-size: 13px; cursor: pointer; color: var(--soft); }
+  .seg button:hover { border-color: #cfcdc6; }
+  .seg button[aria-pressed="true"] { border-color: var(--fg); color: var(--fg); font-weight: 600; }
+  .actions { display: flex; justify-content: end; gap: 8px; padding-top: 4px; }
+  .toast { position: fixed; bottom: 28px; left: 50%; transform: translate(-50%, 20px); opacity: 0; background: var(--fg); color: #fff; padding: 11px 16px; border-radius: 10px; font-size: 14px; transition: .3s ease; display: flex; gap: 10px; align-items: center; }
+  .toast[data-show] { opacity: 1; transform: translate(-50%, 0); }
+  .toast i { width: 16px; height: 16px; border-radius: 50%; background: var(--ok); display: inline-block; }
+</style>
+</head>
+<body>
+  <aside>
+    <div class="brand"><span class="mark">A</span>Acme Projects</div>
+    <nav>
+      <a href="#" aria-current="page"><span class="dot"></span>Tasks</a>
+      <a href="#"><span class="dot"></span>Projects</a>
+      <a href="#"><span class="dot"></span>Team</a>
+      <a href="#"><span class="dot"></span>Settings</a>
+    </nav>
+  </aside>
+  <main>
+    <header>
+      <div><h1>Tasks</h1><p class="sub">Website refresh &middot; 4 open</p></div>
+      <button class="btn btn-primary" id="new">New task</button>
+    </header>
+    <div class="list" id="list"></div>
+  </main>
+
+  <dialog id="dlg" aria-labelledby="dlg-title">
+    <form class="dlg" method="dialog" id="form">
+      <h2 id="dlg-title">New task</h2>
+      <label>Title<input class="field" id="title" name="title" placeholder="What needs doing?" autocomplete="off" /></label>
+      <div><label for="assignee">Assignee</label>
+        <div class="select" style="margin-top:6px">
+          <button type="button" class="field" id="assignee" aria-haspopup="listbox" aria-expanded="false"><span id="assignee-value">Unassigned</span><span aria-hidden="true">&#9662;</span></button>
+          <div class="menu" role="listbox" id="menu" aria-label="Assignee"></div>
+        </div>
+      </div>
+      <div><label>Priority</label>
+        <div class="seg" style="margin-top:6px" role="group" aria-label="Priority">
+          <button type="button" aria-pressed="false">Low</button>
+          <button type="button" aria-pressed="true">Medium</button>
+          <button type="button" aria-pressed="false">High</button>
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-ghost" id="cancel">Cancel</button>
+        <button class="btn btn-primary" id="create">Create task</button>
+      </div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status"><i></i><span id="toast-text"></span></div>
+
+<script>
+  const PEOPLE = [
+    { name: "Priya Shah", role: "Design", color: "#7c3aed" },
+    { name: "Marcus Lee", role: "Engineering", color: "#0e7490" },
+    { name: "Dana Ortiz", role: "Content", color: "#b45309" },
+  ];
+  const initials = (n) => n.split(" ").map((p) => p[0]).join("");
+  const tasks = [
+    { title: "Draft the launch announcement", who: "Dana Ortiz", priority: "Medium" },
+    { title: "Refresh product screenshots", who: "Priya Shah", priority: "Low" },
+    { title: "Fix the signup redirect", who: "Marcus Lee", priority: "High" },
+    { title: "Review the new onboarding copy", who: "Dana Ortiz", priority: "Medium" },
+  ];
+  const $ = (s) => document.querySelector(s);
+  function row(t, isNew) {
+    const p = PEOPLE.find((x) => x.name === t.who);
+    return `<div class="row${isNew ? " new" : ""}" role="row"><span class="check"></span><span>${t.title.replace(/</g, "&lt;")}</span>
+      <span class="who">${p ? `<span class="av" style="background:${p.color}">${initials(p.name)}</span>${p.name}` : "Unassigned"}</span>
+      <span class="tag${t.priority === "High" ? " high" : ""}">${t.priority}</span></div>`;
+  }
+  const render = (fresh) => { $("#list").innerHTML = tasks.map((t, i) => row(t, fresh && i === 0)).join(""); $(".sub").innerHTML = `Website refresh &middot; ${tasks.length} open`; };
+  render();
+
+  $("#menu").innerHTML = PEOPLE.map((p) => `<div class="opt" role="option" aria-selected="false" data-name="${p.name}"><span class="av" style="background:${p.color}">${initials(p.name)}</span>${p.name}<small>${p.role}</small></div>`).join("");
+  let assignee = "";
+  const menu = $("#menu"), trigger = $("#assignee");
+  const setMenu = (open) => { open ? menu.setAttribute("data-open", "") : menu.removeAttribute("data-open"); trigger.setAttribute("aria-expanded", String(open)); };
+  trigger.onclick = () => setMenu(!menu.hasAttribute("data-open"));
+  menu.onclick = (e) => { const o = e.target.closest(".opt"); if (!o) return; assignee = o.dataset.name; $("#assignee-value").textContent = assignee; setMenu(false); };
+  document.querySelectorAll(".seg button").forEach((b) => b.onclick = () => document.querySelectorAll(".seg button").forEach((x) => x.setAttribute("aria-pressed", String(x === b))));
+
+  $("#new").onclick = () => { $("#form").reset(); assignee = ""; $("#assignee-value").textContent = "Unassigned"; document.querySelectorAll(".seg button").forEach((x) => x.setAttribute("aria-pressed", String(x.textContent === "Medium"))); $("#dlg").showModal(); };
+  $("#cancel").onclick = () => $("#dlg").close();
+  $("#form").onsubmit = () => {
+    const title = $("#title").value.trim() || "Untitled task";
+    const priority = document.querySelector('.seg [aria-pressed="true"]').textContent;
+    tasks.unshift({ title, who: assignee, priority });
+    render(true);
+    $("#toast-text").textContent = assignee ? `Task created and assigned to ${assignee.split(" ")[0]}` : "Task created";
+    $("#toast").setAttribute("data-show", "");
+    setTimeout(() => $("#toast").removeAttribute("data-show"), 2600);
+  };
+</script>
+</body>
+</html>

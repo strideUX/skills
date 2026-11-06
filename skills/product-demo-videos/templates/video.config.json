@@ -1,0 +1,28 @@
+{
+  "app": { "url": "https://app.example.com", "auth": "auth.json" },
+  "mode": "browser",
+  "viewport": { "width": 1440, "height": 900, "scale": 2 },
+  "output": { "width": 1920, "height": 1200, "fps": 30 },
+  "voice": {
+    "provider": "elevenlabs",
+    "voiceId": "",
+    "model": "eleven_v4",
+    "settings": { "stability": 0.15, "similarity_boost": 0.5, "style": 0, "use_speaker_boost": true }
+  },
+  "brand": {
+    "name": "Your product",
+    "logo": "",
+    "background": "#f6f5f1",
+    "foreground": "#17181b",
+    "accent": "#2f5bea",
+    "font": "",
+    "url": "example.com"
+  },
+  "intro": { "enabled": true, "seconds": 3.2, "series": "Getting started" },
+  "outro": { "enabled": true, "seconds": 4, "cta": "Try it free" },
+  "transition": { "style": "fade", "seconds": 0.5 },
+  "music": { "file": "", "volume": 0.22, "duck": true },
+  "captions": { "burn": false },
+  "zoom": { "scale": 1.6, "ease": 0.7 },
+  "redact": []
+}

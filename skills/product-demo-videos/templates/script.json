@@ -1,0 +1,13 @@
+{
+  "title": "Create and assign a task",
+  "url": "sample-app/index.html",
+  "next": "Set a due date",
+  "beats": [
+    "In this video, we'll create a task and hand it to a teammate.",
+    "Start with New task, at the top of the list.",
+    "Give it a short, clear title, like Update the pricing page.",
+    "Open Assignee, and choose who should own it. Priya runs design, so she's a good fit.",
+    "Set the priority to High, then click Create task.",
+    "The task lands at the top of the list, already assigned to Priya. Next, we'll give it a due date."
+  ]
+}

@@ -6,15 +6,15 @@
   },
   "metadata": {
     "description": "Agent skills strideUX builds and uses in its own workflow.",
-    "version": "1.0.0"
+    "version": "1.1.0"
   },
   "plugins": [
     {
-      "name": "narrated-screen-recordings",
-      "description": "Make short narrated product walkthrough videos: a script drives a real browser and pointer while the screen records, and ElevenLabs voices each step in time with the action.",
+      "name": "product-demo-videos",
+      "description": "Make narrated product demo and walkthrough videos of a web app: a pointer timed to the voice, zooms, a branded intro and outro, music and captions, with no editing by hand.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/narrated-screen-recordings"]
+      "skills": ["./skills/product-demo-videos"]
     }
   ]
 }

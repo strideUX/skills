@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8" />
+<!--
+  Intro card. Rendered frame by frame by scripts/lib/cards.mjs, so every
+  animation here must be a CSS animation (they are paused and seeked).
+  Variables: {{brand}} {{logo}} {{eyebrow}} {{title}}; colors and font come
+  in as --bg --fg --accent --font. Copy this file into your project's
+  cards/ folder to change it.
+-->
+<style>
+  {{fontFace}}
+  html, body { margin: 0; width: 100%; height: 100%; background: var(--bg); color: var(--fg); font-family: var(--font); overflow: hidden; }
+  .wrap { position: absolute; inset: 0; padding: 7.5vw 8.5vw; display: flex; flex-direction: column; justify-content: space-between; }
+  .logo { height: 2.6vw; display: flex; align-items: center; gap: .8vw; font-weight: 650; font-size: 1.7vw; letter-spacing: -.01em; animation: in .7s .05s cubic-bezier(.2,.7,.2,1) both; }
+  .logo img { height: 100%; width: auto; }
+  .main { max-width: 74vw; }
+  .eyebrow { font-size: 1.45vw; opacity: .62; margin-bottom: 1.6vw; animation: up .8s .25s cubic-bezier(.2,.7,.2,1) both; }
+  h1 { margin: 0; font-size: 5.6vw; line-height: 1.04; font-weight: 600; letter-spacing: -.025em; animation: up .9s .4s cubic-bezier(.2,.7,.2,1) both; }
+  .rule { height: .32vw; width: 9vw; background: var(--accent); margin-top: 3vw; transform-origin: left; animation: grow .9s .75s cubic-bezier(.6,0,.2,1) both; }
+  .foot { height: 2.6vw; }
+  @keyframes in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes up { from { opacity: 0; transform: translateY(1.4vw); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
+  @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+</style></head>
+<body><div class="wrap">
+  <div class="logo">{{logo}}</div>
+  <div class="main">
+    <div class="eyebrow">{{eyebrow}}</div>
+    <h1>{{title}}</h1>
+    <div class="rule"></div>
+  </div>
+  <div class="foot"></div>
+</div></body></html>
